@@ -20,6 +20,9 @@ xcuserdata/
 ## Other
 *.moved-aside
 *.xcuserstate
+.DS_Store
+Pods/
+Podfile.lock
 
 ## Obj-C/Swift specific
 *.hmap
