@@ -12,6 +12,10 @@
 #import "MovieDetailViewController.h"
 #import "MBProgressHUD.h"
 
+// constants
+const int LIST_VIEW_INDEX = 0;
+const int GRID_VIEW_INDEX = 1;
+
 @interface MoviesViewController () <UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource>
 @property (strong, nonatomic) NSArray *movies;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -20,7 +24,6 @@
 @property (strong, nonatomic) UIRefreshControl* tableRefreshControl;
 @property (strong, nonatomic) UIRefreshControl* collectionRefreshControl;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *viewSegmentedControl;
-
 @end
 
 @implementation MoviesViewController
@@ -74,7 +77,7 @@
 
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    MovieCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MovieCollectionCell"  forIndexPath:indexPath];
+    MovieCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MovieCollectionCell" forIndexPath:indexPath];
     NSDictionary *movie = [self.movies objectAtIndex:indexPath.row];
     [cell setMovie:movie];
     return cell;
@@ -100,18 +103,46 @@
 }
 
 - (IBAction)onViewChanged:(id)sender {
+    [self showCurrentView];
+}
+
+// Get a pointer to the current view
+- (UIView *) getCurrentView {
     int view = self.viewSegmentedControl.selectedSegmentIndex;
-    if (view == 0) {
+    if (view == LIST_VIEW_INDEX) {
+        return self.tableView;
+    } else if (view == GRID_VIEW_INDEX) {
+        return self.collectionView;
+    }
+    return nil;
+}
+
+// Show the currently chosen view and refresh the data
+- (void) showCurrentView {
+    int view = self.viewSegmentedControl.selectedSegmentIndex;
+    if (view == LIST_VIEW_INDEX) {
+        [self.tableView reloadData];
         self.tableView.hidden = NO;
         self.collectionView.hidden = YES;
-    } else {
-        self.tableView.hidden = YES;
+    } else if (view == GRID_VIEW_INDEX) {
+        [self.collectionView reloadData];
         self.collectionView.hidden = NO;
+        self.tableView.hidden = YES;
     }
 }
 
 // Load a new set of movie data
 - (void) loadMovieData:(UIRefreshControl *)refreshControl {
+
+    // Prepare the UI
+    UIView* currentView = [self getCurrentView];
+
+    if (refreshControl == nil) {
+        [MBProgressHUD showHUDAddedTo:currentView animated:YES];
+    }
+    self.errorView.hidden = YES;
+
+    // Make the request
     NSString *apiKey = @"a07e22bc18f5cb106bfe4cc1f83ad8ed";
     NSString *urlString = [NSString stringWithFormat:@"https://api.themoviedb.org/3/movie/%@?api_key=%@", self.endpoint, apiKey];
     
@@ -121,11 +152,6 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
                              delegate:nil
                              delegateQueue:[NSOperationQueue mainQueue]];
-    
-    if (refreshControl == nil) {
-        [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
-    }
-    self.errorView.hidden = YES;
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                           completionHandler:^(NSData * _Nullable data,
                                                               NSURLResponse * _Nullable response,
@@ -136,8 +162,7 @@
                                                                     options:kNilOptions
                                                                     error:&jsonError];
             self.movies = responseDictionary[@"results"];
-            [self.collectionView reloadData];
-            [self.tableView reloadData];
+            [self showCurrentView];
         } else {
             self.errorView.hidden = NO;
             NSLog(@"An error occurred: %@", error.description);
@@ -146,7 +171,7 @@
         if (refreshControl != nil) {
             [refreshControl endRefreshing];
         } else {
-            [MBProgressHUD hideHUDForView:self.tableView animated:YES];
+            [MBProgressHUD hideHUDForView:currentView animated:YES];
         }
     }];
     
