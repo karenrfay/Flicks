@@ -50,7 +50,6 @@
 - (void) showMovieDetail {
 
     // Title
-    self.title = self.movie[@"title"];
     self.titleLabel.text = self.movie[@"title"];
     [self.titleLabel sizeToFit];
 

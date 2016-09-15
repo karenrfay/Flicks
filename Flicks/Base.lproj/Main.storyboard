@@ -111,7 +111,7 @@
                     <navigationItem key="navigationItem" id="mkt-w6-wfI">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="ezk-yv-mBR">
                             <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="tAx-Zs-jjK">
-                                <rect key="frame" x="223" y="8" width="81" height="29"/>
+                                <rect key="frame" x="234" y="8" width="70" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="" image="List.png"/>
@@ -313,7 +313,7 @@
         <image name="Clock.png" width="48" height="48"/>
         <image name="Error.png" width="48" height="48"/>
         <image name="Grid.png" width="20" height="20"/>
-        <image name="List.png" width="24" height="24"/>
+        <image name="List.png" width="20" height="24"/>
         <image name="WhiteEmptyStar.png" width="18" height="18"/>
         <image name="WhiteStar.png" width="18" height="18"/>
         <image name="WhiteVideos.png" width="48" height="48"/>

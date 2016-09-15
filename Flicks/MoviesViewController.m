@@ -16,14 +16,17 @@
 const int LIST_VIEW_INDEX = 0;
 const int GRID_VIEW_INDEX = 1;
 
-@interface MoviesViewController () <UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource>
-@property (strong, nonatomic) NSArray *movies;
+@interface MoviesViewController () <UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *errorView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *viewSegmentedControl;
+
+@property (strong, nonatomic) NSArray *movies;
+@property (strong, nonatomic) NSURLSessionDataTask *dataTask;
 @property (strong, nonatomic) UIRefreshControl* tableRefreshControl;
 @property (strong, nonatomic) UIRefreshControl* collectionRefreshControl;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *viewSegmentedControl;
+@property (strong, nonatomic) UISearchBar *searchBar;
 @end
 
 @implementation MoviesViewController
@@ -38,7 +41,7 @@ const int GRID_VIEW_INDEX = 1;
     // set up the table view
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    
+
     // set up the refresh controls
     self.tableRefreshControl = [[UIRefreshControl alloc] init];
     self.tableRefreshControl.tintColor = [UIColor whiteColor];
@@ -50,12 +53,23 @@ const int GRID_VIEW_INDEX = 1;
     [self.collectionRefreshControl addTarget:self action:@selector(loadMovieData:) forControlEvents:UIControlEventValueChanged];
     [self.collectionView insertSubview:self.collectionRefreshControl atIndex:0];
 
+    // set up the search bar
+    self.searchBar = [[UISearchBar alloc] init];
+    self.searchBar.delegate = self;
+    self.navigationItem.titleView = self.searchBar;
+
     [self loadMovieData:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    UIScrollView *currentView = [self getCurrentView];
+    [currentView setContentOffset:CGPointMake(0, -currentView.contentInset.top) animated:NO];
+    [self loadMovieData:nil];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -107,7 +121,7 @@ const int GRID_VIEW_INDEX = 1;
 }
 
 // Get a pointer to the current view
-- (UIView *) getCurrentView {
+- (UIScrollView *) getCurrentView {
     int view = self.viewSegmentedControl.selectedSegmentIndex;
     if (view == LIST_VIEW_INDEX) {
         return self.tableView;
@@ -135,27 +149,37 @@ const int GRID_VIEW_INDEX = 1;
 - (void) loadMovieData:(UIRefreshControl *)refreshControl {
 
     // Prepare the UI
-    UIView* currentView = [self getCurrentView];
-
-    if (refreshControl == nil) {
+    NSString *query = self.searchBar.text;
+    UIView *currentView = [self getCurrentView];
+    if (refreshControl == nil && query.length == 0) {
         [MBProgressHUD showHUDAddedTo:currentView animated:YES];
     }
     self.errorView.hidden = YES;
 
     // Make the request
     NSString *apiKey = @"a07e22bc18f5cb106bfe4cc1f83ad8ed";
-    NSString *urlString = [NSString stringWithFormat:@"https://api.themoviedb.org/3/movie/%@?api_key=%@", self.endpoint, apiKey];
-    
+    NSString *urlString;
+
+    if (query.length > 1) {
+        urlString = [NSString stringWithFormat:@"https://api.themoviedb.org/3/search/movie?query=%@&api_key=%@", query, apiKey];
+    } else {
+        urlString = [NSString stringWithFormat:@"https://api.themoviedb.org/3/movie/%@?api_key=%@", self.endpoint, apiKey];
+    }
+    urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
                              delegate:nil
                              delegateQueue:[NSOperationQueue mainQueue]];
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request
-                                          completionHandler:^(NSData * _Nullable data,
-                                                              NSURLResponse * _Nullable response,
-                                                              NSError * _Nullable error) {
+    if (self.dataTask != nil) {
+        [self.dataTask cancel];
+    }
+    self.dataTask = [session dataTaskWithRequest:request
+                               completionHandler:^(NSData * _Nullable data,
+                                                   NSURLResponse * _Nullable response,
+                                                   NSError * _Nullable error) {
         if (!error) {
             NSError *jsonError = nil;
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data
@@ -164,7 +188,9 @@ const int GRID_VIEW_INDEX = 1;
             self.movies = responseDictionary[@"results"];
             [self showCurrentView];
         } else {
-            self.errorView.hidden = NO;
+            if (error.code != -999) { // -999 is "cancelled"
+                self.errorView.hidden = NO;
+            }
             NSLog(@"An error occurred: %@", error.description);
         }
 
@@ -173,9 +199,10 @@ const int GRID_VIEW_INDEX = 1;
         } else {
             [MBProgressHUD hideHUDForView:currentView animated:YES];
         }
+        self.dataTask = nil;
     }];
     
-    [task resume];
+    [self.dataTask resume];
 }
 
 @end
