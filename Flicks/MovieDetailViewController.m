@@ -7,10 +7,11 @@
 //
 
 #import "MovieDetailViewController.h"
+#import "PosterViewController.h"
 #import "TrailerViewController.h"
 #import "UIImageView+AFNetworking.h"
 
-@interface MovieDetailViewController ()
+@interface MovieDetailViewController () <UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *posterImage;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *infoView;
@@ -90,7 +91,17 @@
         // now replace it with the large image
         NSString *largeUrlString = [@"https://image.tmdb.org/t/p/original" stringByAppendingString:posterPath];
         [self.posterImage setImageWithURL:[NSURL URLWithString:largeUrlString]];
+
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapPoster:)];
+        tapGesture.delegate = self;
+        tapGesture.numberOfTapsRequired = 1;
+        [self.scrollView addGestureRecognizer:tapGesture];
     }
+}
+
+// Tap handler for the background poster image
+-(void)onTapPoster:(UITapGestureRecognizer*)guesture {
+    [self performSegueWithIdentifier:@"posterSegue" sender:self];
 }
 
 // Load a new set of movie data
@@ -132,10 +143,13 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 // called every time we're about to do a transition to another view
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    //if ([segue.identifier isEqualToString:@"detailSegue"]) {
+    if ([segue.identifier isEqualToString:@"trailersSegue"]) {
         TrailerViewController *vc = segue.destinationViewController;
         vc.movie = self.movie;
-    //}
+    } else if ([segue.identifier isEqualToString:@"posterSegue"]) {
+        PosterViewController *vc = segue.destinationViewController;
+        vc.movie = self.movie;
+    }
 }
 
 @end

@@ -25,6 +25,8 @@
 		A640F0471D89FD250072FF65 /* List.png in Resources */ = {isa = PBXBuildFile; fileRef = A640F0451D89FD250072FF65 /* List.png */; };
 		A645C8CA1D87A4B300056F3F /* Star.png in Resources */ = {isa = PBXBuildFile; fileRef = A645C8C81D87A4B300056F3F /* Star.png */; };
 		A645C8CB1D87A4B300056F3F /* Video.png in Resources */ = {isa = PBXBuildFile; fileRef = A645C8C91D87A4B300056F3F /* Video.png */; };
+		A66AA6831D8B5195007FB5DC /* PosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A66AA6821D8B5195007FB5DC /* PosterViewController.m */; };
+		A66AA6851D8B5EBB007FB5DC /* Close.png in Resources */ = {isa = PBXBuildFile; fileRef = A66AA6841D8B5EBB007FB5DC /* Close.png */; };
 		A6ABA36F1D8A0C0400E79E2A /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = A6ABA36E1D8A0C0400E79E2A /* README.md */; };
 		A6CBC5971D8725A500E14F72 /* MovieTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CBC5961D8725A500E14F72 /* MovieTableCell.m */; };
 		A6CBC59B1D872B0600E14F72 /* MovieDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CBC59A1D872B0600E14F72 /* MovieDetailViewController.m */; };
@@ -57,6 +59,9 @@
 		A640F0451D89FD250072FF65 /* List.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = List.png; sourceTree = "<group>"; };
 		A645C8C81D87A4B300056F3F /* Star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Star.png; sourceTree = "<group>"; };
 		A645C8C91D87A4B300056F3F /* Video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Video.png; sourceTree = "<group>"; };
+		A66AA6811D8B5195007FB5DC /* PosterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PosterViewController.h; sourceTree = "<group>"; };
+		A66AA6821D8B5195007FB5DC /* PosterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PosterViewController.m; sourceTree = "<group>"; };
+		A66AA6841D8B5EBB007FB5DC /* Close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Close.png; sourceTree = "<group>"; };
 		A6ABA36E1D8A0C0400E79E2A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A6CBC5951D8725A500E14F72 /* MovieTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTableCell.h; sourceTree = "<group>"; };
 		A6CBC5961D8725A500E14F72 /* MovieTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieTableCell.m; sourceTree = "<group>"; };
@@ -156,6 +161,7 @@
 		A645C8C51D87729B00056F3F /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				A66AA6841D8B5EBB007FB5DC /* Close.png */,
 				A640F0441D89FD250072FF65 /* Grid.png */,
 				A640F0451D89FD250072FF65 /* List.png */,
 				A640F00E1D88C75E0072FF65 /* Error.png */,
@@ -176,6 +182,8 @@
 				A60F5F721D871F7E0033A9B6 /* MoviesViewController.m */,
 				A6CBC5991D872B0600E14F72 /* MovieDetailViewController.h */,
 				A6CBC59A1D872B0600E14F72 /* MovieDetailViewController.m */,
+				A66AA6811D8B5195007FB5DC /* PosterViewController.h */,
+				A66AA6821D8B5195007FB5DC /* PosterViewController.m */,
 				A6CBC59C1D872F5300E14F72 /* TrailerViewController.h */,
 				A6CBC59D1D872F5300E14F72 /* TrailerViewController.m */,
 			);
@@ -253,6 +261,7 @@
 				A640F0011D889F980072FF65 /* Clock.png in Resources */,
 				A60F5F761D871F7E0033A9B6 /* Main.storyboard in Resources */,
 				A640F00F1D88C75E0072FF65 /* Error.png in Resources */,
+				A66AA6851D8B5EBB007FB5DC /* Close.png in Resources */,
 				A640F0051D88A1160072FF65 /* WhiteEmptyStar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,6 +330,7 @@
 				A6ABA36F1D8A0C0400E79E2A /* README.md in Sources */,
 				A6CBC59E1D872F5300E14F72 /* TrailerViewController.m in Sources */,
 				A60F5F6D1D871F7E0033A9B6 /* main.m in Sources */,
+				A66AA6831D8B5195007FB5DC /* PosterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
