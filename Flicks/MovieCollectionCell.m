@@ -25,7 +25,7 @@
 
         [self.posterView setImageWithURLRequest:request placeholderImage:nil
                                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                            //self.posterView.contentMode = UIViewContentModeScaleAspectFit;
+                                            self.posterView.contentMode = UIViewContentModeScaleAspectFit;
                                             if (response != nil) {
                                                 self.posterView.alpha = 0.0;
                                                 self.posterView.image = image;
