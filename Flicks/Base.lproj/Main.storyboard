@@ -87,8 +87,8 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <view hidden="YES" alpha="0.69999999999999996" contentMode="scaleToFill" id="uxM-p5-6tx">
-                                <rect key="frame" x="0.0" y="65" width="320" height="32"/>
+                            <view hidden="YES" alpha="0.94999999999999996" contentMode="scaleToFill" id="uxM-p5-6tx">
+                                <rect key="frame" x="0.0" y="64" width="320" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Error.png" id="oEt-cJ-45k">
@@ -103,7 +103,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.25098040700000002" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>

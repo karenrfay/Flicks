@@ -114,7 +114,7 @@ const int GRID_VIEW_INDEX = 1;
 
 - (void) viewDidLayoutSubviews {
     self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0);
-    self.collectionView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0);
+    //self.collectionView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0);
 }
 
 - (IBAction)onViewChanged:(id)sender {
@@ -155,7 +155,6 @@ const int GRID_VIEW_INDEX = 1;
     if (refreshControl == nil && query.length == 0) {
         [MBProgressHUD showHUDAddedTo:currentView animated:YES];
     }
-    self.errorView.hidden = YES;
 
     // Make the request
     NSString *apiKey = @"a07e22bc18f5cb106bfe4cc1f83ad8ed";
@@ -188,9 +187,12 @@ const int GRID_VIEW_INDEX = 1;
                                                                     error:&jsonError];
             self.movies = responseDictionary[@"results"];
             [self showCurrentView];
+            self.errorView.hidden = YES;
         } else {
             if (error.code != -999) { // -999 is "cancelled"
                 self.errorView.hidden = NO;
+            } else {
+                self.errorView.hidden = YES;
             }
             NSLog(@"An error occurred: %@", error.description);
         }
