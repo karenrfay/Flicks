@@ -113,7 +113,8 @@ const int GRID_VIEW_INDEX = 1;
 }
 
 - (void) viewDidLayoutSubviews {
-
+    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0);
+    self.collectionView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0);
 }
 
 - (IBAction)onViewChanged:(id)sender {
