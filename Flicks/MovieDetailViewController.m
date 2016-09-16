@@ -72,14 +72,24 @@
                                         ratingHeight);
 
     // Duration
-    int duration = [self.movie[@"runtime"] intValue];
-    NSUInteger h = duration / 60;
-    NSUInteger m = duration % 60;
-    self.durationLabel.text = [NSString stringWithFormat:@"%uh %umin", h, m];
+    NSObject *runtime = self.movie[@"runtime"];
+    if (runtime && ![runtime isEqual:[NSNull null]]) {
+        int duration = [self.movie[@"runtime"] intValue];
+        NSUInteger h = duration / 60;
+        NSUInteger m = duration % 60;
+        self.durationLabel.text = [NSString stringWithFormat:@"%uh %umin", h, m];
+    } else {
+        self.durationLabel.text = @"0h 0min";
+    }
 
     // Overview
-    self.overviewLabel.text = self.movie[@"overview"];
-    [self.overviewLabel sizeToFit];
+    NSString *overview = self.movie[@"overview"];
+    if (overview && ![overview isEqual:[NSNull null]]) {
+        self.overviewLabel.text = overview;
+        [self.overviewLabel sizeToFit];
+    } else {
+        self.overviewLabel.text  = @"";
+    }
 
     // Poster image
     NSString *posterPath = self.movie[@"poster_path"];
